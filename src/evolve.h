@@ -1,8 +1,6 @@
 #ifndef EVOLVE_H
 #define EVOLVE_H
 
-#include "all.h"
-
 #include <Magick++/Image.h>
 #include <string>
 
