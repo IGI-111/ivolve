@@ -2,6 +2,7 @@ INCLUDE_DIRECTORIES(${ImageMagick_INCLUDE_DIRS})
 
 ADD_EXECUTABLE( ${PROJECT_NAME}
 	main.cxx
+	evolve.cxx
 	)
 
 TARGET_LINK_LIBRARIES(ivolve ${ImageMagick_LIBRARIES})
