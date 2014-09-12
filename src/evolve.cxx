@@ -1,3 +1,5 @@
+#include "all.h"
+
 #include "evolve.h"
 
 Magick::Image Ivolve::evolve(const std::string &path, unsigned rounds)

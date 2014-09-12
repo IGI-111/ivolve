@@ -1,5 +1,4 @@
-#define MAGICKCORE_QUANTUM_DEPTH 16 // 16 bit color depth
-#define MAGICKCORE_HDRI_ENABLE 0    // no need for HDRI
+#include "all.h"
 
 #include <Magick++/Image.h>
 #include <string>
