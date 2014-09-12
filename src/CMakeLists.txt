@@ -1,0 +1,3 @@
+ADD_EXECUTABLE( ${PROJECT_NAME}
+	main.cxx
+	)
