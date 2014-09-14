@@ -7,18 +7,18 @@
 
 int main(int argc, char *argv[])
 {
+	srand(time(NULL));
 	using namespace std;
 	using namespace Magick;
 	using namespace Ivolve;
 
-	srand(time(NULL));
 
 	Image img;
 	string path;
 	for(int i = 1;i<argc;++i)
 	{
 		path = argv[i];
-		img = evolve(path, 10000);
+		img = evolve(path, 500);
 		img.write("evolved" + to_string(i) + ".jpg");
 	}
 	return 0;

@@ -18,8 +18,8 @@ namespace Ivolve
 
 	struct Polygon
 	{
-		std::vector<Magick::Coordinate> points;
-		Magick::Color color;
+			std::vector<Magick::Coordinate> points;
+			Magick::Color color = Magick::Color("white");
 	};
 
 	class DNA
