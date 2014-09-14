@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 	{
 		path = argv[i];
 		img = evolve(path, 10000);
-		img.write("evolved" + to_string(i) + ".png");
+		img.write("evolved" + to_string(i) + ".jpg");
 	}
 	return 0;
 }

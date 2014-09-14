@@ -2,9 +2,8 @@
 #define DNA_H
 
 #include <Magick++/Drawable.h>
-#include <array>
-
-#include "Geometry.h"
+#include <Magick++/Image.h>
+#include <vector>
 
 // DNA uses the following format when converted to string, every number is an integer except for Alpha which is float
 //
@@ -16,10 +15,17 @@
 
 namespace Ivolve
 {
+
+	struct Polygon
+	{
+		std::vector<Magick::Coordinate> points;
+		Magick::Color color;
+	};
+
 	class DNA
 	{
 		private:
-			std::vector<Geometry::Polygon> polygons;
+			std::vector<Polygon> polygons;
 			inline unsigned polycount() const noexcept
 			{
 				return polygons.size();
@@ -30,13 +36,14 @@ namespace Ivolve
 			}
 
 		public:
-			DNA(unsigned polycount, unsigned verticesPerPoly) noexcept;
+			DNA(unsigned polycount = 20, unsigned verticesPerPoly = 10) noexcept;
 			void mutate(unsigned imageWidth, unsigned imageHeight) noexcept;
 			std::string toString(void) const;
-			inline std::vector<Geometry::Polygon> getPolygons() const noexcept
+			inline std::vector<Polygon> getPolygons() const noexcept
 			{
 				return polygons;
 			}
+			Magick::DrawableList polygonsToDraw() const;
 	};
 
 }
