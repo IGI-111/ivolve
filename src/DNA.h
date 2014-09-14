@@ -36,7 +36,7 @@ namespace Ivolve
 			}
 
 		public:
-			DNA(unsigned polycount = 20, unsigned verticesPerPoly = 10) noexcept;
+			DNA(unsigned polycount = 50, unsigned verticesPerPoly = 6) noexcept;
 			void mutate(unsigned imageWidth, unsigned imageHeight) noexcept;
 			std::string toString(void) const;
 			inline std::vector<Polygon> getPolygons() const noexcept
@@ -44,6 +44,7 @@ namespace Ivolve
 				return polygons;
 			}
 			Magick::DrawableList polygonsToDraw() const;
+			void operator=(const DNA &d);
 	};
 
 }

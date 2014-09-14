@@ -2,6 +2,7 @@
 #include "DNA.h"
 
 #include <sstream>
+#include <iomanip>
 #include <Magick++/Color.h>
 #include <Magick++.h>
 
@@ -10,6 +11,17 @@ Ivolve::DNA::DNA(unsigned polycount, unsigned verticesPerPoly) noexcept
 	polygons.resize(polycount);
 	for(Polygon &p : polygons)
 		p.points.resize(verticesPerPoly);
+}
+
+void Ivolve::DNA::operator=(const DNA &d)
+{
+	polygons.resize(d.polycount());
+	for(Polygon &p : polygons)
+		p.points.resize(d.verticesPerPoly());
+	for (unsigned i = 0; i < d.polycount(); ++i)
+	{
+		polygons[i] = d.polygons[i];
+	}
 }
 
 void Ivolve::DNA::mutate(unsigned imageWidth, unsigned imageHeight) noexcept
