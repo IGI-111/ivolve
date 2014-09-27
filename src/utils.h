@@ -1,18 +1,19 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <Magick++/Image.h>
 #include <string>
 #include <cmath>
+#include <SFML/Graphics/Image.hpp>
+
 
 #define RESULT_SCALE 1000000
 
 namespace Ivolve
 {
-	double compare(Magick::Image &img1, Magick::Image &img2);
-	inline bool metropolisRule(double variation, double currentDistance) // variation shall be positive
+	double compare(const sf::Image &img1, const sf::Image &img2);
+	inline bool metropolisRule(double variation, double temperature) // variation shall be positive
 	{
-		return (double)(rand())/(double)(RAND_MAX) < exp(-variation/currentDistance);
+		return (double)(rand())/(double)(RAND_MAX) < exp(-variation/temperature);
 	}
 }
 

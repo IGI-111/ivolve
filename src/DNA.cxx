@@ -3,25 +3,13 @@
 
 #include <sstream>
 #include <iomanip>
-#include <Magick++/Color.h>
-#include <Magick++.h>
+#include <SFML/Graphics/Shape.hpp>
 
 Ivolve::DNA::DNA(unsigned polycount, unsigned verticesPerPoly) noexcept
 {
 	polygons.resize(polycount);
-	for(Polygon &p : polygons)
-		p.points.resize(verticesPerPoly);
-}
-
-void Ivolve::DNA::operator=(const DNA &d)
-{
-	polygons.resize(d.polycount());
-	for(Polygon &p : polygons)
-		p.points.resize(d.verticesPerPoly());
-	for (unsigned i = 0; i < d.polycount(); ++i)
-	{
-		polygons[i] = d.polygons[i];
-	}
+	for(auto &p : polygons)
+		p.setPointCount(verticesPerPoly);
 }
 
 void Ivolve::DNA::mutate(unsigned imageWidth, unsigned imageHeight) noexcept
@@ -31,28 +19,32 @@ void Ivolve::DNA::mutate(unsigned imageWidth, unsigned imageHeight) noexcept
 
 	if(valueToMutate < verticesPerPoly()*2) // mutate a coordinate
 	{
+		sf::Vector2f pointToMutate = polygons[polyToMutate].getPoint(valueToMutate/2);
 		if(valueToMutate % 2 == 0)
-			polygons[polyToMutate].points[valueToMutate/2].x(rand() % imageWidth);
+			pointToMutate.x = rand() % imageWidth;
 		else
-			polygons[polyToMutate].points[valueToMutate/2].y(rand() % imageHeight);
+			pointToMutate.y = rand() % imageHeight;
+		polygons[polyToMutate].setPoint(valueToMutate/2, pointToMutate);
 	}
 	else // mutate RGB
 	{
+		sf::Color colorToMutate = polygons[polyToMutate].getFillColor();
 		switch(valueToMutate - verticesPerPoly()*2)
 		{
 			case 0:
-				polygons[polyToMutate].color.redQuantum(rand());
+				colorToMutate.r = rand();
 				break;
 			case 1:
-				polygons[polyToMutate].color.greenQuantum(rand());
+				colorToMutate.g = rand();
 				break;
 			case 2:
-				polygons[polyToMutate].color.blueQuantum(rand());
+				colorToMutate.b = rand();
 				break;
 			case 3:
-				polygons[polyToMutate].color.alpha((double)(rand())/(double)(RAND_MAX));
+				colorToMutate.a = rand();
 				break;
 		}
+		polygons[polyToMutate].setFillColor(colorToMutate);
 	}
 }
 
@@ -60,27 +52,11 @@ std::string Ivolve::DNA::toString(void) const
 {
 	std::ostringstream stream;
 	stream << polycount() << ' ' << verticesPerPoly() << std::endl;
-	for(Polygon poly : polygons)
+	for(auto poly : polygons)
 	{
-		for(auto p : poly.points)
-			stream << p.x() << ' ' << p.y() << ' ';
-		stream << poly.color.redQuantum() << ' ' << poly.color.greenQuantum() << ' ' << poly.color.blueQuantum() << ' ' << poly.color.alpha() << std::endl;
+		for (unsigned i = 0; i < poly.getPointCount(); ++i)
+			stream << poly.getPoint(i).x << ' ' << poly.getPoint(i).y << ' ';
+		stream << (int)poly.getFillColor().r << ' ' << (int)poly.getFillColor().g << ' ' << (int)poly.getFillColor().b << ' ' << (int)poly.getFillColor().a << std::endl;
 	}
 	return stream.str();
-}
-
-Magick::DrawableList Ivolve::DNA::polygonsToDraw() const
-{
-	using namespace Magick;
-	Magick::DrawableList result;
-	for(Polygon poly : polygons)
-	{
-		result.push_back(DrawableStrokeColor(poly.color));
-		result.push_back(DrawableFillColor(poly.color));
-		CoordinateList list;
-		for(auto p : poly.points)
-			list.push_back(p);
-		result.push_back(DrawablePolygon(list));
-	}
-	return result;
 }

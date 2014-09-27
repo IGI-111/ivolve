@@ -1,6 +1,7 @@
 #include "all.h"
 
-#include <Magick++/Image.h>
+#include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include <string>
 #include <iostream>
 
@@ -9,29 +10,27 @@
 
 int main(int argc, char *argv[])
 {
+	using namespace sf;
 	using namespace std;
-	using namespace Magick;
 	using namespace Ivolve;
 
 	srand(time(NULL));
-	
+
 	if(argc < 2)
 		return 1;
 
-	Image img;
-	string path = argv[1];
 
-	Image original(path);
-	original.matte(true); // we need transparency to be able to compare
+	Image original;
+	original.loadFromFile(argv[1]);
 
-	Image mother(original.page(), "white");
-	mother.matte(true);
+	Texture mother;
+	mother.create(original.getSize().x, original.getSize().y);
 	DNA motherGenome;
-	double motherDistance = compare(mother, original);
+	double motherDistance = compare(mother.copyToImage(), original);
 
-	Image daughter(original.page(), "white");
-	daughter.matte(true);
+	RenderTexture daughter;
 	DNA daughterGenome;
+	daughter.create(original.getSize().x, original.getSize().y);
 
 	unsigned i = 0;
 	while(true) // main loop
@@ -40,22 +39,23 @@ int main(int argc, char *argv[])
 		std::cout << "Round: " << i << " Distance: " << motherDistance << ' ';
 
 		daughterGenome = motherGenome;
-		daughterGenome.mutate(original.columns(), original.rows());
-		daughter.erase();
-		daughter.draw(daughterGenome.polygonsToDraw());
+		daughterGenome.mutate(original.getSize().x, original.getSize().y);
+		daughter.clear(sf::Color::White);
+		for(auto poly : daughterGenome.getPolygons())
+			daughter.draw(poly);
 
-		double daughterDistance = compare(daughter, original);
+		double daughterDistance = compare(daughter.getTexture().copyToImage(), original);
 		if(daughterDistance < motherDistance )
 		{
 			std::cout << "Improvement!";
-			mother = daughter;
+			mother = daughter.getTexture();
 			motherDistance = daughterDistance;
 			motherGenome = daughterGenome;
 		}
-		else if(metropolisRule(daughterDistance - motherDistance, motherDistance))
+		else if(metropolisRule(daughterDistance - motherDistance, 1))//FIXME: temperature is constant
 		{
 			std::cout << "Metropolis";
-			mother = daughter;
+			mother = daughter.getTexture();
 			motherDistance = daughterDistance;
 			motherGenome = daughterGenome;
 		}

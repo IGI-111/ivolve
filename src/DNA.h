@@ -1,8 +1,8 @@
 #ifndef DNA_H
 #define DNA_H
 
-#include <Magick++/Drawable.h>
-#include <Magick++/Image.h>
+#include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/ConvexShape.hpp>
 #include <vector>
 
 // DNA uses the following format when converted to string, every number is an integer except for Alpha which is float
@@ -16,35 +16,31 @@
 namespace Ivolve
 {
 
-	struct Polygon
-	{
-			std::vector<Magick::Coordinate> points;
-			Magick::Color color = Magick::Color("white");
-	};
-
 	class DNA
 	{
 		private:
-			std::vector<Polygon> polygons;
+			std::vector<sf::ConvexShape> polygons;
 			inline unsigned polycount() const noexcept
 			{
 				return polygons.size();
 			}
 			inline unsigned verticesPerPoly() const noexcept
 			{
-				return polygons.size() > 0 ? polygons[0].points.size() : 0;
+				return polygons.size() > 0 ? polygons[0].getPointCount(): 0;
 			}
 
 		public:
 			DNA(unsigned polycount = 50, unsigned verticesPerPoly = 6) noexcept;
 			void mutate(unsigned imageWidth, unsigned imageHeight) noexcept;
 			std::string toString(void) const;
-			inline std::vector<Polygon> getPolygons() const noexcept
+			inline std::vector<sf::ConvexShape> getPolygons() const noexcept
 			{
 				return polygons;
 			}
-			Magick::DrawableList polygonsToDraw() const;
-			void operator=(const DNA &d);
+			inline void operator=(const DNA &d)
+			{
+				this->polygons = d.polygons;
+			}
 	};
 
 }

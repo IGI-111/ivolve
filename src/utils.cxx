@@ -3,19 +3,27 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <Magick++/Pixels.h>
+#include <SFML/Graphics/Image.hpp>
 #include <cmath>
 
-double Ivolve::compare(Magick::Image &img1, Magick::Image &img2)
+double Ivolve::compare(const sf::Image &img1, const sf::Image &img2)
 {
-	if(img1.columns() != img2.columns())
-		throw std::runtime_error("Different Length");
-	if(img1.rows() != img2.rows())
-		throw std::runtime_error("Different Height");
-	if(img1.colorSpace() != img2.colorSpace())
-		throw std::runtime_error("Different Colorspace");
-	if(img1.matte() != img2.matte())
-		throw std::runtime_error("Different Matte");
-	img1.compare(img2);
-	return img1.meanErrorPerPixel();
+	double distance = 0;
+	for(unsigned x = 0;x<img1.getSize().x;++x)
+		for(unsigned y = 0;y<img1.getSize().y;++y)
+		{
+			sf::Color c1 = img1.getPixel(x,y);
+			sf::Color c2 = img2.getPixel(x,y);
+
+			double deltaRed = c1.r - c2.r;
+			double deltaGreen = c1.g - c2.g;
+			double deltaBlue = c1.b - c2.b;
+
+			double pixelFitness = deltaRed * deltaRed +
+				deltaGreen * deltaGreen +
+				deltaBlue * deltaBlue;
+
+			distance += pixelFitness;
+		}
+	return distance;
 }
