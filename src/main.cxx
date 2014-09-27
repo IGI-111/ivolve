@@ -7,6 +7,7 @@
 #include <thread>
 
 #include "evolve.h"
+#include "display.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,8 +24,9 @@ int main(int argc, char *argv[])
 	sf::RenderTexture daughter;
 
 	std::thread evolution(Ivolve::evolve, std::cref(original), std::ref(mother), std::ref(daughter));
-	//std::thread display{Ivolve::display};
+	std::thread interface(Ivolve::display, std::cref(original), std::cref(mother), std::cref(daughter));
 
 	evolution.join();
+	interface.join();
 	return 0;
 }
