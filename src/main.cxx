@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 
 	srand(time(NULL));
 	
-	if(argc < 1)
+	if(argc < 2)
 		return 1;
 
 	Image img;
