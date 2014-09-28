@@ -30,7 +30,7 @@ namespace Ivolve
 			}
 
 		public:
-			DNA(unsigned polycount = 50, unsigned verticesPerPoly = 6) noexcept;
+			DNA(unsigned polycount = 70, unsigned verticesPerPoly = 6) noexcept;
 			void mutate(unsigned imageWidth, unsigned imageHeight) noexcept;
 			std::string toString(void) const;
 			inline std::vector<sf::ConvexShape> getPolygons() const noexcept

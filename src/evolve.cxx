@@ -9,12 +9,11 @@ void Ivolve::evolve(const sf::Image &original, sf::Texture &mother, sf::RenderTe
 {
 	static DNA motherGenome;
 	static double motherDistance = compare(mother.copyToImage(), original);
-
+	static long double temperature = motherDistance; // init with a big number
 	static DNA daughterGenome;
 
 	static unsigned i = 0;
 
-	std::cout << i << ' ';
 	daughterGenome = motherGenome;
 	daughterGenome.mutate(original.getSize().x, original.getSize().y);
 	daughter.clear(sf::Color::Black);
@@ -24,18 +23,18 @@ void Ivolve::evolve(const sf::Image &original, sf::Texture &mother, sf::RenderTe
 	double daughterDistance = compare(daughter.getTexture().copyToImage(), original);
 	if(daughterDistance < motherDistance )
 	{
-		std::cout << "Improvement!";
+		std::cout << "Improvement!" << std::endl;
 		mother = daughter.getTexture();
 		motherDistance = daughterDistance;
 		motherGenome = daughterGenome;
 	}
-	else if(metropolisRule(daughterDistance - motherDistance, 1))//FIXME: temperature is constant
+	else if(metropolisRule(daughterDistance - motherDistance, temperature))
 	{
-		std::cout << "Metropolis";
+		std::cout << "Metropolis" << std::endl;
 		mother = daughter.getTexture();
 		motherDistance = daughterDistance;
 		motherGenome = daughterGenome;
 	}
-	std::cout << std::endl;
+	temperature *= 0.99; //FIXME: a better law ought to be written
 	++i;
 }
