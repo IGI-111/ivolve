@@ -66,6 +66,9 @@ int main(int argc, char *argv[])
 	}
 
 	if(argc == 3)
+	{
+		std::cout << "Saving to " << argv[2] << std::endl;
 		mother.copyToImage().saveToFile(argv[2]);
+	}
 	return 0;
 }
