@@ -14,7 +14,10 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 
 	if(argc < 2 || argc > 3)
+	{
+		std::cerr << "Usage: ivolve pathToImage [pathToSaveEvolvedImage]" << std::endl;
 		return 1;
+	}
 
 	sf::Image original;
 	if(!original.loadFromFile(argv[1]))
