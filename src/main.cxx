@@ -19,7 +19,8 @@ int main(int argc, char *argv[])
 		return 1;
 
 	sf::Image original;
-	original.loadFromFile(argv[1]);
+	if(!original.loadFromFile(argv[1]))
+		return 2;
 	sf::Texture mother;
 	mother.create(original.getSize().x, original.getSize().y);
 	sf::RenderTexture daughter;
@@ -32,7 +33,6 @@ int main(int argc, char *argv[])
 	originalTexture.loadFromImage(original);
 	originalSprite.setTexture(originalTexture);
 	originalSprite.setPosition(0,0);
-
 
 	sf::Sprite motherSprite;
 	motherSprite.setTexture(mother);

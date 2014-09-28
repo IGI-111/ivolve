@@ -17,7 +17,7 @@ void Ivolve::evolve(const sf::Image &original, sf::Texture &mother, sf::RenderTe
 	std::cout << i << ' ';
 	daughterGenome = motherGenome;
 	daughterGenome.mutate(original.getSize().x, original.getSize().y);
-	daughter.clear(sf::Color::White);
+	daughter.clear(sf::Color::Black);
 	for(auto poly : daughterGenome.getPolygons())
 		daughter.draw(poly);
 
