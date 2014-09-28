@@ -5,7 +5,6 @@ ADD_EXECUTABLE( ${PROJECT_NAME}
 	utils.cxx
 	DNA.cxx
 	evolve.cxx
-	display.cxx
 	)
 
 TARGET_LINK_LIBRARIES(ivolve ${SFML_LIBRARIES})
