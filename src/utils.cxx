@@ -1,4 +1,3 @@
-#include "all.h"
 #include "utils.h"
 
 #include <iostream>

@@ -1,5 +1,3 @@
-#include "all.h"
-
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -15,7 +13,7 @@ int main(int argc, char *argv[])
 {
 	srand(time(NULL));
 
-	if(argc < 2)
+	if(argc < 2 || argc > 3)
 		return 1;
 
 	sf::Image original;
@@ -47,8 +45,13 @@ int main(int argc, char *argv[])
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			if(event.type == sf::Event::Closed)
 				window.close();
+			if(event.type == sf::Event::KeyPressed)
+			{
+				if (event.key.code == sf::Keyboard::Escape)
+					window.close();
+			}
 		}
 		Ivolve::evolve(original, mother, daughter);
 
@@ -58,5 +61,8 @@ int main(int argc, char *argv[])
 		window.draw(daughterSprite);
 		window.display();
 	}
+
+	if(argc == 3)
+		mother.copyToImage().saveToFile(argv[2]);
 	return 0;
 }

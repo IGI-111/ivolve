@@ -1,4 +1,3 @@
-#include "all.h"
 #include "DNA.h"
 
 #include <sstream>
