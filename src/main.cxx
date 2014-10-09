@@ -10,6 +10,8 @@
 
 #include "evolve.h"
 
+#define FRAMERATE 60
+
 int main(int argc, char *argv[])
 {
 	srand(time(NULL));
@@ -29,6 +31,7 @@ int main(int argc, char *argv[])
 	daughter.create(original.getSize().x, original.getSize().y);
 
 	sf::RenderWindow window(sf::VideoMode(original.getSize().x * 3, original.getSize().y), "Ivolve");
+	sf::Clock framerateClock;
 	tgui::Gui gui(window);
 	tgui::MenuBar::Ptr menu(gui);
 	menu->addMenu("File");
@@ -47,7 +50,7 @@ int main(int argc, char *argv[])
 	daughterSprite.setTexture(daughter.getTexture());
 	daughterSprite.setPosition(original.getSize().x*2, 0);
 
-	sf::Clock clock;
+	sf::Clock consoleOutputClock;
 	unsigned alreadyCountedImprovements = 0;
 
 	while (window.isOpen())
@@ -65,19 +68,24 @@ int main(int argc, char *argv[])
 		}
 		Ivolve::evolve(original, mother, daughter);
 
-		window.clear(sf::Color::White);
-		window.draw(originalSprite);
-		window.draw(motherSprite);
-		window.draw(daughterSprite);
-		window.display();
+		if(framerateClock.getElapsedTime().asMilliseconds() >= 1000/FRAMERATE)
+		{
+			// display every 20ms
+			window.clear(sf::Color::White);
+			window.draw(originalSprite);
+			window.draw(motherSprite);
+			window.draw(daughterSprite);
+			window.display();
+			framerateClock.restart();
+		}
 
-		if(clock.getElapsedTime().asSeconds() >= 1)
+		if(consoleOutputClock.getElapsedTime().asSeconds() >= 1)
 		{
 			std::cout
 				<< Ivolve::improvements - alreadyCountedImprovements << " improvements per second" << std::endl
 				<< Ivolve::improvements << " total improvements, " << Ivolve::metropolisRules << " from the metropolis rule" << std::endl;
 			alreadyCountedImprovements = Ivolve::improvements;
-			clock.restart();
+			consoleOutputClock.restart();
 		}
 	}
 
