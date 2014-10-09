@@ -43,6 +43,9 @@ int main(int argc, char *argv[])
 	daughterSprite.setTexture(daughter.getTexture());
 	daughterSprite.setPosition(original.getSize().x*2, 0);
 
+	sf::Clock clock;
+	unsigned alreadyCountedImprovements = 0;
+
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -63,6 +66,15 @@ int main(int argc, char *argv[])
 		window.draw(motherSprite);
 		window.draw(daughterSprite);
 		window.display();
+
+		if(clock.getElapsedTime().asSeconds() >= 1)
+		{
+			std::cout
+				<< Ivolve::improvements - alreadyCountedImprovements << " improvements per second" << std::endl
+				<< Ivolve::improvements << " total improvements, " << Ivolve::metropolisRules << " from the metropolis rule" << std::endl;
+			alreadyCountedImprovements = Ivolve::improvements;
+			clock.restart();
+		}
 	}
 
 	if(argc == 3)

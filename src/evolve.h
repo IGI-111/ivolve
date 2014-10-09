@@ -8,6 +8,10 @@
 namespace Ivolve
 {
 	void evolve(const sf::Image &original, sf::Texture &mother, sf::RenderTexture &daughter);
+
+	extern unsigned improvements;
+	extern unsigned metropolisRules;
+	extern unsigned rounds;
 }
 
 #endif /* end of include guard: EVOLVE_H */
