@@ -3,6 +3,12 @@ solution "Ivolve"
 	configurations { "Debug", "Release" }
 		buildoptions {"-std=c++11"}
 
+	configuration "Debug"
+		flags { "Symbols" }
+
+	configuration "Release"
+		flags { "Optimize" }
+
 	project "Ivolve"
 		kind "WindowedApp"
 		links { "sfml-system", "sfml-window", "sfml-graphics", "tgui" }
