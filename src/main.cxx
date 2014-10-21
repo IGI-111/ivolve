@@ -3,7 +3,6 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Window/Event.hpp>
-#include <TGUI/TGUI.hpp>
 #include <string>
 #include <iostream>
 #include <thread>
@@ -32,9 +31,6 @@ int main(int argc, char *argv[])
 
 	sf::RenderWindow window(sf::VideoMode(original.getSize().x * 3, original.getSize().y), "Ivolve");
 	sf::Clock framerateClock;
-	tgui::Gui gui(window);
-	tgui::MenuBar::Ptr menu(gui);
-	menu->addMenu("File");
 
 	sf::Sprite originalSprite;
 	sf::Texture originalTexture;
