@@ -11,7 +11,7 @@ solution "Ivolve"
 
 	project "Ivolve"
 		kind "WindowedApp"
-		links { "sfml-system", "sfml-window", "sfml-graphics", "tgui" }
+		links { "sfml-system", "sfml-window", "sfml-graphics" }
 		files { "src/*.cxx", "src/*.h" }
 		libdirs { "lib" }
 		includedirs { "include" }
