@@ -8,15 +8,19 @@
 unsigned Ivolve::improvements = 0;
 unsigned Ivolve::metropolisRules = 0;
 unsigned Ivolve::rounds = 0;
+double Ivolve::fitness = 0;
 
 void Ivolve::evolve(const sf::Image &original, sf::Texture &mother, sf::RenderTexture &daughter)
 {
 	static DNA motherGenome;
 	static double motherDistance = compare(mother.copyToImage(), original);
+	static const double originalMotherDistance = motherDistance;
 	static long double temperature = motherDistance; // init with a big number
 	static DNA daughterGenome;
 
 	static unsigned i = 0;
+
+	Ivolve::fitness = Ivolve::fitnessFromDistance(motherDistance, originalMotherDistance);
 
 	daughterGenome = motherGenome;
 	daughterGenome.mutate(original.getSize().x, original.getSize().y);

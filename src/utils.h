@@ -14,6 +14,13 @@ namespace Ivolve
 	{
 		return (double)(rand())/(double)(RAND_MAX) < exp(-variation/temperature);
 	}
+	/// Calcule le ratio de ressemblance.
+	/// \param distance La distance à l'image originale.
+	/// \param originalDistance La distance à l'image originale d'une image vide.
+	inline double fitnessFromDistance(double distance, double originalDistance)
+	{
+        return (originalDistance - distance) / originalDistance;
+	}
 }
 
 #endif /* end of include guard: EVOLVE_H */

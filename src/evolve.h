@@ -20,6 +20,8 @@ namespace Ivolve
 	extern unsigned metropolisRules;
 	/// Le nombre de générations déjà appliquées.
 	extern unsigned rounds;
+	/// Le ratio de ressemblance entre image mère et fille.
+	extern double fitness;
 }
 
 #endif /* end of include guard: EVOLVE_H */
