@@ -5,6 +5,7 @@
 #include <SFML/Window/Event.hpp>
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <thread>
 
 #include "evolve.h"
@@ -31,6 +32,7 @@ int main(int argc, char *argv[])
 
 	sf::RenderWindow window(sf::VideoMode(original.getSize().x * 3, original.getSize().y), "Ivolve");
 	sf::Clock framerateClock;
+	sf::Clock timeElapsed;
 
 	sf::Sprite originalSprite;
 	sf::Texture originalTexture;
@@ -45,6 +47,8 @@ int main(int argc, char *argv[])
 	sf::Sprite daughterSprite;
 	daughterSprite.setTexture(daughter.getTexture());
 	daughterSprite.setPosition(original.getSize().x*2, 0);
+
+
 
 	sf::Clock consoleOutputClock;
 	unsigned alreadyCountedImprovements = 0;
@@ -77,10 +81,14 @@ int main(int argc, char *argv[])
 
 		if(consoleOutputClock.getElapsedTime().asSeconds() >= 1)
 		{
-			std::cout
-				<< Ivolve::improvements - alreadyCountedImprovements << " improvements per second" << std::endl
-				<< Ivolve::improvements << " total improvements, " << Ivolve::metropolisRules << " from the metropolis rule" << std::endl;
-			alreadyCountedImprovements = Ivolve::improvements;
+			unsigned timeElapsedInSeconds = timeElapsed.getElapsedTime().asSeconds();
+            std::cout
+                << timeElapsedInSeconds/60 << ':' << std::setfill('0') << std::setw(2) << timeElapsedInSeconds%60
+                << std::setw(3) << " ips: " << Ivolve::improvements - alreadyCountedImprovements
+                << std::setw(3) << " ti: " << Ivolve::improvements
+                << std::setw(3) << " metro: " << Ivolve::metropolisRules
+                << std::setw(3) << " fit: " << std::setprecision(4) << Ivolve::fitness * 100  << '%' << std::endl;
+            alreadyCountedImprovements = Ivolve::improvements;
 			consoleOutputClock.restart();
 		}
 	}
