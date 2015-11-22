@@ -1,0 +1,5 @@
+cc = g++
+cflags = -Wall -std=c++11
+lflags = -lsfml-system -lsfml-graphics -lsfml-window
+: foreach src/*.cxx |> $(cc) $(cflags) -c %f -o %o |> obj/%B.o
+: obj/*.o |> $(cc) $(cflags) %f -o %o $(lflags) |> bin/ivolve
